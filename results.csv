@@ -1,0 +1,617 @@
+provider,model,question,answer,tokens_in,tokens_out,latency_s,rating
+gemini,gemini-3.8-flash,What is a list in Python?,"In Python, a **list** is a built-in data structure used to store a collection of items in a single variable. 
+
+Lists are one of the most commonly used data types in Python. They are created using square brackets `[]`, with items separated by commas.
+
+### Example:
+```python
+# A list of strings
+fruits = [""apple"", ""banana"", ""cherry""]
+
+# A list of integers
+numbers = [1, 2, 3, 4, 5]
+
+# A list with mixed data types
+mixed = [""Alice"", 25, True, 3.14]
+```
+
+---
+
+### Key Characteristics of Python Lists
+
+1. **Ordered:** 
+   The items have a defined order, and that order will not change unless you explicitly change it. You can access items using their position (index), starting at `0`.
+   ```python
+   fruits = [""apple"", ""banana"", ""cherry""]
+   print(fruits[0])  # Output: apple
+   print(fruits[-1]) # Output: cherry (negative index means from the end)
+   ```
+
+2. **Mutable (Changeable):**
+   You can modify, add, or remove items after the list has been created.
+   ```python
+   fruits = [""apple"", ""banana"", ""cherry""]
+   fruits[1] = ""blueberry""  # Changes ""banana"" to ""blueberry""
+   ```
+
+3. **Allows Duplicates:**
+   Because lists are indexed, they can have items with the same value.
+   ```python
+   scores = [10, 20, 10, 30, 20]
+   ```
+
+4. **Heterogeneous:**
+   A single list can hold different types of data (strings, numbers, booleans, and even other lists).
+
+---
+
+### Common List Operations
+
+Here are a few essential things you can do with a list:
+
+* **Add an item to the end:**
+  ```python
+  fruits.append(""orange"")
+  ```
+* **Insert an item at a specific position:**
+  ```python
+  fruits.insert(1, ""mango"")  # Inserts at index 1
+  ```
+* **Remove an item:**
+  ```python
+  fruits.remove(""apple"")     # Removes by value
+  popped_item = fruits.pop() # Removes and returns the last item
+  ```
+* **Find the length of a list:**
+  ```python
+  print(len(fruits))  # Outputs the number of items
+  ```
+* **Slice a list (get a sub-list):**
+  ```python
+  numbers = [0, 1, 2, 3, 4, 5]
+  print(numbers[1:4])  # Output: [1, 2, 3] (from index 1 up to, but not including, 4)
+  ```",8,633,85.56,correct
+gemini,gemini-3.8-flash,What is the difference between a list and a tuple?,"In Python, the primary difference between a **list** and a **tuple** is **mutability**: 
+
+* **Lists are mutable** (they can be changed after creation).
+* **Tuples are immutable** (they cannot be changed after creation).
+
+Here is a detailed breakdown of the differences:
+
+---
+
+### Quick Comparison
+
+| Feature | List | Tuple |
+| :--- | :--- | :--- |
+| **Mutability** | **Mutable** (can add, remove, or change items) | **Immutable** (cannot change once created) |
+| **Syntax** | Square brackets: `[1, 2, 3]` | Parentheses: `(1, 2, 3)` |
+| **Memory** | Consumes more memory | Consumes less memory |
+| **Performance** | Slightly slower | Faster |
+| **Methods** | Many built-in methods (`append`, `remove`, `sort`, etc.) | Only two methods (`count`, `index`) |
+| **Dictionary Key**| **No** (unhashable) | **Yes** (if all elements inside are also immutable) |
+
+---
+
+### Key Differences Explained
+
+#### 1. Mutability (The Biggest Difference)
+You can change, add, or remove elements in a list. You cannot do this with a tuple.
+
+```python
+# List (Mutable)
+my_list = [1, 2, 3]
+my_list[0] = 99       # Allowed
+my_list.append(4)     # Allowed
+print(my_list)        # Output: [99, 2, 3, 4]
+
+# Tuple (Immutable)
+my_tuple = (1, 2, 3)
+my_tuple[0] = 99      # Raises TypeError: 'tuple' object does not support item assignment
+my_tuple.append(4)    # Raises AttributeError: 'tuple' object has no attribute 'append'
+```
+
+#### 2. Performance and Memory
+Because tuples are fixed in size, Python can allocate a specific block of memory for them. Lists require extra memory to be allocated in advance to allow for future items being added (resizing).
+
+* **Tuples are faster** to create and iterate over.
+* **Tuples take up less RAM** than lists.
+
+#### 3. Use as Dictionary Keys
+Because tuples are immutable, they are ""hashable."" This means you can use a tuple as a key in a Python dictionary. You cannot use a list as a dictionary key.
+
+```python
+# Valid: Tuple as a key
+locations = {
+    (35.6895, 139.6917): ""Tokyo"",
+    (40.7128, -74.0060): ""New York""
+}
+
+# Invalid: List as a key (Raises TypeError: unhashable type: 'list')
+locations = {
+    [35.6895, 139.6917]: ""Tokyo""
+}
+```
+
+---
+
+### When should you use which?
+
+* **Use a List when:**
+  * You have a collection of similar items that will change over time (e.g., adding or removing users in a queue, a shopping cart).
+  * You need to sort, reverse, or reorder the items in place.
+
+* **Use a Tuple when:**
+  * You have data that should **not** change throughout the program (e.g., RGB color values `(255, 0, 0)`, coordinates `(x, y)`).
+  * You are returning multiple values from a function.
+  * You need to use the data as a key in a dictionary or an element in a set.
+  * You want to signal to other programmers: *""This data is a fixed record, do not modify it.""*",12,841,28.41,correct
+gemini,gemini-3.8-flash,When should I use a dictionary instead of a list?,"The short answer: **Use a list when order matters; use a dictionary when identity (lookup by a label/key) matters.**
+
+Here is a detailed breakdown of when you should choose a dictionary over a list:
+
+---
+
+### 1. When you need meaningful labels (Keys instead of Indexes)
+In a list, elements are accessed by their numerical position (`0, 1, 2...`). In a dictionary, elements are accessed by a descriptive name.
+
+* **Bad with a list:**
+  ```python
+  # What does index 1 represent? The state? The street?
+  address = [""123 Main St"", ""Springfield"", ""IL"", ""62701""]
+  print(address[1]) 
+  ```
+* **Good with a dictionary:**
+  ```python
+  address = {
+      ""street"": ""123 Main St"",
+      ""city"": ""Springfield"",
+      ""state"": ""IL"",
+      ""zip"": ""62701""
+  }
+  print(address[""city""]) # Self-documenting and clear
+  ```
+
+---
+
+### 2. When fast lookups are critical (Performance)
+Checking if an item exists or retrieving it:
+* **List:** Takes **$O(N)$** time. Python has to scan the list item-by-item from the beginning until it finds a match. If the list has 1,000,000 items, it might take 1,000,000 checks.
+* **Dictionary:** Takes **$O(1)$** time (instant lookup). Because dictionaries use a hash table, finding `users[""john_doe""]` takes the same amount of time whether you have 10 users or 10,000,000 users.
+
+---
+
+### 3. When you have pairs of connected data
+If your data naturally fits a **""Lookup Item $\rightarrow$ Associated Value""** relationship, use a dictionary.
+
+* Storing prices: `prices = {""apple"": 0.99, ""banana"": 0.59}`
+* Storing phone numbers: `contacts = {""Alice"": ""555-1234"", ""Bob"": ""555-5678""}`
+* Translating codes: `status_codes = {200: ""OK"", 404: ""Not Found"", 500: ""Server Error""}`
+
+---
+
+### 4. For counting and grouping data
+Dictionaries are ideal for frequency counting because keys must be unique.
+
+```python
+# Counting word frequency
+word_counts = {}
+for word in text:
+    word_counts[word] = word_counts.get(word, 0) + 1
+```
+Doing this with a list would require searching the list for the word on every single iteration, which is extremely slow.
+
+---
+
+### 5. When IDs are non-sequential or ""sparse""
+If you have data tied to user IDs like `105`, `9401`, and `88123`:
+* With a **list**, you would need an array with 88,124 elements just to hold 3 users (wasting massive amounts of memory).
+* With a **dictionary**, you only store the 3 IDs you actually have:
+  ```python
+  users = {105: ""Alice"", 9401: ""Bob"", 88123: ""Charlie""}
+  ```
+
+---
+
+### When should you stick with a **List**?
+Do **not** use a dictionary if:
+1. **You need duplicate values:** Dictionaries cannot have duplicate keys.
+2. **Order of insertion/sorting is the primary feature:** e.g., a high-score leaderboard, a playlist, a queue of tasks.
+3. **You only have a simple collection of single items:** e.g., `[""red"", ""blue"", ""green""]` (no need to map them to anything).
+
+---
+
+### Summary Cheat Sheet
+
+| Feature | List | Dictionary |
+| :--- | :--- | :--- |
+| **Accessed by...** | Numerical index (`list[0]`) | Unique Key (`dict[""name""]`) |
+| **Lookup Speed** | Slow ($O(N)$) | Extremely Fast ($O(1)$) |
+| **Duplicate entries?** | Yes | Keys must be unique; Values can duplicate |
+| **Best used for...** | Sequences, ordered queues, simple collections | Lookups, records, structured objects, frequency maps |",12,997,353.17,correct
+gemini,gemini-3.8-flash,"What does list(range(3, 10, 2)) return?","It returns:
+
+```python
+[3, 5, 7, 9]
+```
+
+### Explanation:
+* **Start (`3`)**: The sequence begins at 3.
+* **Stop (`10`)**: The sequence stops before reaching 10 (exclusive).
+* **Step (`2`)**: It increments by 2 each time (3, 5, 7, 9).",18,87,232.2,correct
+gemini,gemini-3.8-flash,"Why does a = [1,2]; b = a; b.append(3) change a too?","In Python, variables do not hold the actual data; they hold a **reference** (a memory address) pointing to the data. 
+
+When you write:
+
+```python
+a = [1, 2]
+```
+Python creates a list object `[1, 2]` in memory and assigns the label `a` to it.
+
+When you do:
+
+```python
+b = a
+```
+You are **not** making a copy of the list. Instead, you are giving the *exact same list* a second label, `b`. Both `a` and `b` now point to the same memory location.
+
+Because lists are **mutable** (they can be changed in-place), running:
+
+```python
+b.append(3)
+```
+modifies the single list that both variables point to. Since `a` refers to that same list, checking `a` will also show `[1, 2, 3]`.
+
+---
+
+### How to verify this
+
+You can check if two variables point to the same object using the `is` operator or the `id()` function:
+
+```python
+print(a is b)        # True (they are the same object)
+print(id(a) == id(b)) # True (they share the same memory address)
+```
+
+---
+
+### How to prevent this (Make a copy)
+
+If you want `b` to be an independent copy so that changes don't affect `a`, you must explicitly copy it:
+
+```python
+# Option 1: Using the .copy() method (Python 3.3+)
+b = a.copy()
+
+# Option 2: Using list slicing
+b = a[:]
+
+# Option 3: Using the list() constructor
+b = list(a)
+```
+
+Now, modifying `b` will leave `a` untouched:
+
+```python
+a = [1, 2]
+b = a.copy()
+b.append(3)
+
+print(a)  # [1, 2]
+print(b)  # [1, 2, 3]
+```
+
+*(Note: If your list contains nested lists, e.g., `[[1, 2], [3, 4]]`, you would need `copy.deepcopy()` instead.)*",24,495,73.24,correct
+groq,openai/gpt-oss-20b,What is a list in Python?,"**A list in Python is a built‑in, mutable, ordered collection of items.**  
+It’s the most common way to store a sequence of values that you may want to change later.
+
+| Feature | What it means |
+|---------|---------------|
+| **Ordered** | Items keep the order you put them in. Index 0 is the first element, 1 is the second, etc. |
+| **Mutable** | You can add, remove, or change elements after the list is created. |
+| **Dynamic** | The list automatically resizes as you add or remove items. |
+| **Heterogeneous** | Elements can be of any type—ints, strings, other lists, objects, etc. |
+| **Indexable & Sliceable** | You can access elements by index (`my_list[2]`) or slice (`my_list[1:5]`). |
+| **Sequence type** | Supports iteration, membership tests (`in`), and many sequence methods. |
+
+### Basic syntax
+
+```python
+# Create an empty list
+empty = []
+
+# Create a list with initial values
+numbers = [1, 2, 3, 4, 5]
+
+# Mixed types
+mixed = [42, ""hello"", 3.14, [1, 2], {""key"": ""value""}]
+```
+
+### Common operations
+
+| Operation | Example | Result |
+|-----------|---------|--------|
+| **Append** | `numbers.append(6)` | `[1, 2, 3, 4, 5, 6]` |
+| **Extend** | `numbers.extend([7, 8])` | `[1, 2, 3, 4, 5, 6, 7, 8]` |
+| **Insert** | `numbers.insert(0, 0)` | `[0, 1, 2, 3, 4, 5, 6, 7, 8]` |
+| **Remove** | `numbers.remove(4)` | `[0, 1, 2, 3, 5, 6, 7, 8]` |
+| **Pop** | `last = numbers.pop()` | `last = 8`, list becomes `[0, 1, 2, 3, 5, 6, 7]` |
+| **Index** | `numbers.index(5)` | `4` |
+| **Count** | `numbers.count(1)` | `1` |
+| **Sort** | `numbers.sort()` | `[0, 1, 2, 3, 5, 6, 7]` |
+| **Reverse** | `numbers.reverse()` | `[7, 6, 5, 3, 2, 1, 0]` |
+| **Clear** | `numbers.clear()` | `[]` |
+
+### List comprehensions
+
+A concise way to build lists:
+
+```python
+squares = [x*x for x in range(10)]          # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+evens   = [x for x in range(20) if x % 2 == 0]
+```
+
+### Nested lists
+
+Lists can contain other lists, enabling matrix‑like structures:
+
+```python
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(matrix[1][2])  # 6
+```
+
+### When to use a list
+
+- **Dynamic collections** where you need to add/remove items.
+- **Ordered data** that you’ll iterate over or index into.
+- **Mutable sequences** that may change over time.
+
+### When not to use a list
+
+- **Fixed-size, immutable data** → use a tuple.
+- **Key‑value pairs** → use a dictionary.
+- **Large numeric arrays** → use `array.array` or NumPy’s `nd",78,2000,3.87,partly correct
+groq,openai/gpt-oss-20b,What is the difference between a list and a tuple?,"### Short answer  
+- **List** (`[]`) – *mutable*, can be changed after creation.  
+- **Tuple** (`()`) – *immutable*, cannot be altered once created.
+
+---
+
+## In depth
+
+| Feature | List | Tuple |
+|---------|------|-------|
+| **Syntax** | `my_list = [1, 2, 3]` | `my_tuple = (1, 2, 3)` |
+| **Mutability** | ✔️ can add, remove, replace items | ❌ cannot modify after creation |
+| **Methods** | Many (e.g., `append`, `extend`, `remove`, `pop`, `sort`, `reverse`) | Very few (only `count`, `index`) |
+| **Memory usage** | Slightly larger (dynamic array overhead) | Smaller, more compact |
+| **Performance** | Slightly slower for read‑only operations | Faster for iteration, indexing, and hashing |
+| **Hashability** | ❌ Unhashable → cannot be dictionary keys or set elements | ✔️ Hashable (if all elements are hashable) |
+| **Use‑case** | Collections that change over time (lists of items, building up a result) | Fixed collections, return multiple values, keys in dicts/sets, constant data |
+| **Thread safety** | Mutating operations are not thread‑safe by default | Read‑only nature makes them inherently thread‑safe |
+| **Copy semantics** | Shallow copy copies the container, but elements are shared | Same as list, but you cannot modify the copy |
+| **Unpacking** | Works, but you can also assign to a list variable | Works, often used for “return multiple values” |
+| **Concatenation** | `a + b` creates a new list | `a + b` creates a new tuple |
+| **Slicing** | Returns a new list | Returns a new tuple |
+| **Iteration** | Same as tuple | Same as list |
+
+---
+
+## Why choose one over the other?
+
+| Scenario | Recommended container |
+|----------|-----------------------|
+| You need to **modify** the collection (add/remove items) | List |
+| You need a **fixed** collection that should not change | Tuple |
+| You need to use the collection as a **key** in a dictionary or element in a set | Tuple |
+| You want a **compact** representation for a small, read‑only dataset | Tuple |
+| You want to **return** several values from a function | Tuple |
+| You need **fast** iteration and indexing, and you’re sure the data won’t change | Tuple |
+| You need **dynamic** resizing or frequent modifications | List |
+
+---
+
+## Practical examples
+
+```python
+# List – mutable
+fruits = ['apple', 'banana', 'cherry']
+fruits.append('date')          # ['apple', 'banana', 'cherry', 'date']
+fruits[1] = 'blueberry'        # ['apple', 'blueberry', 'cherry', 'date']
+
+# Tuple – immutable
+coords = (10, 20, 30)
+# coords[0] = 5   # ❌ TypeError: 'tuple' object does not support item assignment
+
+# Tuple as a dictionary key
+point = (3, 5)
+grid = {point: 'A'}            # Works because tuples are hashable
+
+# Returning multiple values
+def get_user():
+    return 'alice', 30, True   # returns a tuple
+
+name, age, active = get_user()
+```
+
+---
+
+## Performance note
+
+For **small, read‑only** collections, tuples are usually a bit faster and use less memory.  
+For **large, frequently modified** collections, lists are more appropriate because they are designed for mutation.
+
+---
+
+## Bottom line
+
+- **Use a list** when you need a container that can grow, shrink, or change.  
+- **Use a tuple** when you need a fixed, hashable, and potentially more efficient container.
+
+Both are fundamental Python data structures; choosing the right one is a matter of intent and performance.",82,1674,2.32,correct
+groq,openai/gpt-oss-20b,When should I use a dictionary instead of a list?,"### Short answer  
+**Use a dictionary when you need a *mapping* (key → value) and you care about fast lookup, membership tests, or you want to associate arbitrary, hashable keys with data.**  
+**Use a list when you need an *ordered sequence* of items, you’ll index by position, you’ll append/pop at the end, or you need to preserve duplicates and the natural “first‑in‑first‑out” order.**
+
+---
+
+## 1. What a dictionary gives you
+
+| Feature | What it means | Typical use‑case |
+|---------|---------------|------------------|
+| **Key‑value mapping** | Each element is a pair: `key: value`. | Phone book (`name → number`), configuration (`option → value`), cache (`id → object`). |
+| **Fast lookup** | Average‑case O(1) for `dict[key]`, `key in dict`. | Checking if a user ID exists, retrieving a record by primary key. |
+| **Unique keys** | Keys must be unique; duplicates overwrite. | Counting occurrences (`word → count`). |
+| **Hashable keys** | Keys must be immutable and hashable (`int`, `str`, `tuple`, …). | Cannot use a list or dict as a key. |
+| **Insertion‑order preserved** (Python 3.7+) | The order you add items is the order you iterate. | Maintaining the order of configuration options. |
+| **Sparse data** | Only store what you need; no “holes”. | Mapping of user IDs to profiles when IDs are large and sparse. |
+| **Set‑like behavior** | `dict.keys()` behaves like a set. | Quick membership tests (`if key in dict`). |
+
+### When a dictionary shines
+
+| Problem | Dictionary solution | Why it’s better |
+|---------|---------------------|-----------------|
+| “I need to look up a value by a non‑numeric key.” | `value = my_dict[key]` | O(1) vs. O(n) linear search. |
+| “I need to know if a key exists.” | `if key in my_dict:` | O(1) membership test. |
+| “I need to map many keys to the same value.” | `my_dict[key] = value` for each key | One lookup per key, no duplicates. |
+| “I need to group items by a property.” | `groups.setdefault(key, []).append(item)` | O(1) per item, no manual loops. |
+| “I need a dispatch table.” | `handlers = { 'add': add_func, 'del': del_func }` | `handlers[action](args)` is fast and clear. |
+
+---
+
+## 2. What a list gives you
+
+| Feature | What it means | Typical use‑case |
+|---------|---------------|------------------|
+| **Ordered sequence** | Items are indexed by integer position. | Playlist, queue, stack. |
+| **Index access** | `lst[i]` gives the i‑th element. | Random access to the 5th item. |
+| **Duplicates allowed** | Same value can appear many times. | Histogram of colors, list of words. |
+| **Contiguous memory** | Faster iteration, lower memory overhead than dict. | Large numeric arrays (use `array` or `numpy` for heavy math). |
+| **Mutable items** | You can change, insert, delete by position. | Building a list incrementally. |
+| **Append/pop at end** | `lst.append(x)` / `lst.pop()` are amortized O(1). | Stack or FIFO queue. |
+
+### When a list shines
+
+| Problem | List solution | Why it’s better |
+|---------|---------------|-----------------|
+| “I need to preserve order of insertion.” | `my_list.append(item)` | Order is inherent. |
+| “I need to iterate sequentially.” | `for item in my_list:` | Simple, fast. |
+| “I need to access by position.” | `my_list[i]` | Direct indexing. |
+| “I need to allow duplicates.” | `my_list.append(value)` | No restriction. |
+| “I need a dense numeric array.” | `my_list = [0]*1000` | Compact, contiguous. |
+| “I need a stack or queue.” | `append`/`pop` or `deque` | O(1) operations. |
+
+---
+
+## 3. Practical guidelines
+
+| Situation | Choose a dictionary | Choose a list |
+|-----------|---------------------|---------------|
+| **Mapping keys → values** | ✔ | ✘ |
+| **Fast membership test** | ✔ | ✘ |
+| **",82,2000,3.06,partly correct
+groq,openai/gpt-oss-20b,"What does list(range(3, 10, 2)) return?","`list(range(3, 10, 2))` produces the list
+
+```python
+[3, 5, 7, 9]
+```
+
+It starts at 3, stops before 10, and steps by 2.",86,150,1.12,correct
+groq,openai/gpt-oss-20b,"Why does a = [1,2]; b = a; b.append(3) change a too?","### Short answer  
+`b = a` does **not** create a new list.  
+It just makes the name `b` point to the *same* list object that `a` already points to.  
+When you call `b.append(3)` you mutate that list in place, so the change is visible through every name that refers to it—including `a`.
+
+---
+
+## 1. How Python handles names and objects
+
+| Concept | What it means | Example |
+|---------|---------------|---------|
+| **Object** | The actual data stored in memory (e.g., a list, a string, a number). | `[1, 2]` is an object. |
+| **Name** | A label that refers to an object. | `a` is a name that refers to the list object. |
+| **Assignment (`=`)** | Binds a name to an object. It does **not** copy the object. | `b = a` makes `b` refer to the same object that `a` refers to. |
+| **Identity (`is`)** | Checks whether two names refer to the *exact same* object. | `a is b` → `True` after `b = a`. |
+| **Mutability** | Whether an object can be changed after it’s created. | Lists are mutable; tuples, strings, and numbers are immutable. |
+
+---
+
+## 2. Step‑by‑step walk‑through
+
+```python
+a = [1, 2]          # 1. Create a list object and bind name 'a' to it.
+b = a               # 2. Bind name 'b' to the *same* list object.
+b.append(3)         # 3. Mutate the list object in place.
+print(a)            # 4. 'a' sees the mutation because it refers to the same object.
+```
+
+- **After step 1**:  
+  - Object: `[1, 2]`  
+  - `a` → `[1, 2]`
+
+- **After step 2**:  
+  - `b` → `[1, 2]` (same object as `a`)  
+  - `id(a) == id(b)` → `True`
+
+- **After step 3**:  
+  - The list object becomes `[1, 2, 3]`  
+  - Both `a` and `b` point to this mutated object.
+
+- **After step 4**:  
+  - `print(a)` outputs `[1, 2, 3]`
+
+You can verify the identity with `id()`:
+
+```python
+>>> a = [1, 2]
+>>> b = a
+>>> id(a), id(b)
+(140123456789120, 140123456789120)  # same memory address
+```
+
+---
+
+## 3. What if you *wanted* a separate list?
+
+### Shallow copy
+```python
+b = a[:]          # or b = list(a) or b = a.copy()
+```
+- Creates a **new list object** containing the same elements.
+- `id(a) != id(b)`.
+
+### Deep copy (for nested structures)
+```python
+import copy
+b = copy.deepcopy(a)
+```
+- Recursively copies nested objects.
+
+---
+
+## 4. Why does this matter?
+
+- **Mutability**: Mutating an object through one reference affects all references.
+- **Side effects**: Functions that modify mutable arguments can have surprising effects if callers are unaware that the argument is shared.
+- **Performance**: Copying large structures can be expensive; sometimes you *do* want to share the same object.
+
+---
+
+## 5. Quick cheat‑sheet
+
+| Operation | Result | Example |
+|-----------|--------|---------|
+| `a = [1, 2]` | Create list | `a` → `[1, 2]` |
+| `b = a` | `b` refers to same list | `a is b` → `True` |
+| `b.append(3)` | Mutates list | `a` → `[1, 2, 3]` |
+| `b = a[:]` | New list (shallow copy) | `a is b` → `False` |
+| `b = copy.deepcopy(a)` | New list (deep copy) | `a is b` → `False` |
+
+---
+
+### TL;DR  
+`b = a` makes `b` an *alias* for the same list object. Mutating the list through `b` changes the object that `a` also refers to. To get an independent copy, use slicing (`a[:]`), `list(a)`, `a.copy()`, or `copy.deepcopy(a)` for nested structures.",93,1974,2.54,correct
